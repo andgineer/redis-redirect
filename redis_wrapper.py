@@ -1,30 +1,41 @@
 import redis
 import redis.exceptions
+import os
+import logging
 
-REDIS_CLUSTER_CONFIG_HOST = "???.cache.amazonaws.com"
-REDIS_CLUSTER_CONFIG_PORT = 6379
+REDIS_HOST = os.getenv("REDIS_HOST", "???.cache.amazonaws.com")
+REDIS_PORT = 6379
+
+log = logging.getLogger(__name__)
 
 
-class RedisWrapper:
+class RedisWrapper(redis.Redis):
     """
     Wraps all Redis methods to catch "MOVED" exception.
     Change host&port if any and repeat the method call.
     """
+    _original_redis = None
 
-    _wrapped_attrs = []
-
-    def __init__(self, host: str, port: int, db: int = 0):
+    def __init__(self, host: str, port: int, db: int = 0):  # pylint: disable=super-init-not-called
+        # we inherit only for code completion in IDE so no need to init parent
         self._host = host
         self._port = port
         self._db = db
         self._original_redis = redis.Redis(host=self._host, port=self._port, db=self._db)
 
-    def __getattr__(self, attr_name):
-        attr = getattr(self._original_redis, attr_name)
+    def __getattribute__(self, attr_name):
+        original_redis = object.__getattribute__(self, "_original_redis")  # to prevent __getattribute__ recursion
+        try:
+            attr = object.__getattribute__(original_redis, attr_name)
+        except AttributeError:
+            if attr_name not in object.__getattribute__(self, "__dict__"):  # to prevent __getattribute__ recursion
+                raise  # this is not RedisWrapper attribute
+            return object.__getattribute__(self, attr_name)  # RedisWrapper own attribute
         if hasattr(attr, "__call__"):
 
             def wrapper(*args, **kwargs):
                 nonlocal attr
+                log.debug(f"wrapped {attr_name} call")
                 try:
                     return attr(*args, **kwargs)
                 except redis.exceptions.ResponseError as e:
@@ -35,28 +46,23 @@ class RedisWrapper:
                         # We use the redirect address as new Redis master and hope the cluster have only one node so no more MOVED
                         redis_connection_str = e.args[0].split(" ")[2]
                         self._host, self._port = redis_connection_str.split(":")
-                        print(f"Redis redirect to node {self._host}:{self._port}")
-                        self._original_redis = redis.Redis(
+                        log.debug(f"Redis redirect to node {self._host}:{self._port}")
+                        original_redis = redis.Redis(
                             host=self._host, port=self._port, db=self._db
                         )
-                        for attr_name_to_delete in self._wrapped_attrs:
-                            delattr(self, attr_name_to_delete)
-                        self._wrapped_attrs.clear()
-                        attr = getattr(self._original_redis, attr_name)
+                        self._original_redis = original_redis
+                        attr = getattr(original_redis, attr_name)
                         return attr(*args, **kwargs)
-                raise RuntimeError(f"Cannot access cluster {self._host}:{self._port}")
+                    raise
 
-            setattr(
-                self, attr_name, wrapper
-            )  # next time RedisWrapper attr will be used without __get__attr call
-            self._wrapped_attrs.append(attr_name)
+            log.debug(f"Wrapping {attr_name}")
             return wrapper
         return attr
 
 
 cache = RedisWrapper(
-    host=REDIS_CLUSTER_CONFIG_HOST,
-    port=REDIS_CLUSTER_CONFIG_PORT,
+    host=REDIS_HOST,
+    port=REDIS_PORT,
 )
 
 

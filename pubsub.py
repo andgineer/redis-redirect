@@ -2,7 +2,7 @@
 REDIS async pubsub example
 """
 import aioredis
-from aio_cache import cache
+from aioredis_wrapper import cache
 import asyncio
 
 

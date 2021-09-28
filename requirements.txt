@@ -1,0 +1,4 @@
+aioredis
+hiredis
+types-redis
+redis

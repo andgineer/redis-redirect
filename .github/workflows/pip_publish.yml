@@ -47,5 +47,6 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
+        body: https://pypi.org/project/redis-redirect/${RELEASE_VERSION:1}/
         draft: false
         prerelease: false

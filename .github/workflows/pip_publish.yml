@@ -17,13 +17,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Put git tag to steps output
-      id: vars
-      run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
-    - name: Set env var to git tag
-      env:
-        RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
-      run: echo $RELEASE_VERSION
+    - name: Set version var
+      run: |
+        echo "RELEASE_VERSION=${GITHUB_REF#refs/*/:1}" >> $RELEASE_VERSION
+        echo $RELEASE_VERSION
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
@@ -47,6 +44,6 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
-        body: https://pypi.org/project/redis-redirect/${RELEASE_VERSION:1}/
+        body: https://pypi.org/project/redis-redirect/{{ env.RELEASE_VERSION }}/
         draft: false
         prerelease: false

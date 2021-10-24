@@ -23,6 +23,7 @@ jobs:
     - name: Set env var to git tag
       env:
         RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+      run: echo $RELEASE_VERSION
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
@@ -36,6 +37,5 @@ jobs:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
-        echo $RELEASE_VERSION
         python setup.py sdist bdist_wheel
         twine upload dist/*

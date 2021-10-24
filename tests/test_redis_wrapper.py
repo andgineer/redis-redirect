@@ -1,4 +1,4 @@
-import redis_wrapper
+from redis_redirect import redis_wrapper
 import redis
 import redis.exceptions
 import logging

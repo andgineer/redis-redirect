@@ -1,4 +1,4 @@
-import aioredis_wrapper
+from redis_redirect import aioredis_wrapper
 import aioredis
 import aioredis.exceptions
 import pytest

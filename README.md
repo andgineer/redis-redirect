@@ -1,8 +1,12 @@
-(aio)REDIS wrapper to deal with cluster redirect exceptions like
+[![Build Status](https://github.com/andgineer/redis-redirect//workflows/ci/badge.svg)](https://github.com/andgineer/redis-redirect//actions)
+
+# (aio)REDIS wrapper to deal with cluster redirect exceptions `MOVED`
+
+Like
 
         redis.exceptions.ResponseError: MOVED 4085 10.213.192.152:6379
 
-With this exception REDIS say that you should repeat your request for
+With this exception REDIS tells that you should repeat your request for
 the specified host.
 
 That happens

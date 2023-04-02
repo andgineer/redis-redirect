@@ -3,7 +3,7 @@ import aioredis
 import aioredis.exceptions
 import pytest
 import logging
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from typing import Awaitable
 
 
@@ -17,6 +17,9 @@ async def async_get(result):
 class RedisMock:
     def __init__(self, host, port, db):
         self.host = host
+        self.connection = Mock()
+        self.connection_pool = Mock()
+        self._DEL_MESSAGE = Mock()
 
     def get(self, key) -> Awaitable:
         log.debug(f"RedisMock.get ({self.host})")

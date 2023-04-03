@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from redis_redirect import redis_wrapper
 import redis
 import redis.exceptions
@@ -24,9 +26,16 @@ class RedisMock:
         log.debug(f"RedisMock.close ({self.host})")
 
 
-def test_cache():
-    redis.Redis = RedisMock
-    wrapper = redis_wrapper.RedisWrapper(host="fake-host", port=0)
-    assert wrapper.get("key") == "fake_value"
-    wrapper = redis_wrapper.RedisWrapper(host="redirect-host", port=0)
-    assert wrapper.get("key") == "fake_value"
+def test_cache_no_redirect():
+    with patch("redis_redirect.redis_wrapper.redis.Redis", RedisMock):
+        wrapper = redis_wrapper.RedisWrapper(host="-fake-host-", port=0)
+        assert wrapper.get("key") == "fake_value"
+        assert wrapper._original_redis.host == "-fake-host-"
+
+
+def test_cache_with_redirect():
+    with patch("redis_redirect.redis_wrapper.redis.Redis", RedisMock):
+        wrapper = redis_wrapper.RedisWrapper(host="redirect-host", port=0)
+        assert wrapper.get("key") == "fake_value"
+        assert wrapper._original_redis.host == "fake-host"
+

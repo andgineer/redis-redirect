@@ -15,6 +15,7 @@ async def async_get(result):
 
 
 class RedisMock:
+    """If inited with host=`redirect-host` then raise MOVED exception with redirect to `fake-host:0`"""
     def __init__(self, host, port, db):
         self.host = host
         self.connection = Mock()
@@ -29,17 +30,22 @@ class RedisMock:
 
 
 @pytest.mark.asyncio
-async def test_aiocache():
-    aioredis.Redis = RedisMock
-    aioredis.from_url = Mock(return_value=RedisMock(host="fake-host", port=0, db=0))
-    wrapper = aioredis_wrapper.AioRedisWrapper(host="fake-host", port=0)
-    assert await wrapper.get("key") == "fake_value"
-    aioredis.from_url.assert_called_once()
+async def test_aiocache_no_redirect():
+    with patch("redis_redirect.aioredis_wrapper.aioredis.Redis", RedisMock):
+        aioredis.from_url = Mock(return_value=RedisMock(host="fake-host", port=0, db=0))
+        wrapper = aioredis_wrapper.AioRedisWrapper(host="fake-host", port=0)
+        assert await wrapper.get("key") == "fake_value"
+        aioredis.from_url.assert_called_once()
 
-    aioredis.from_url = Mock(return_value=RedisMock(host="redirect-host", port=0, db=0))
-    wrapper = aioredis_wrapper.AioRedisWrapper(host="redirect-host", port=0)
-    aioredis.from_url.assert_called_once()
-    aioredis.from_url = Mock(return_value=RedisMock(host="fake-host", port=0, db=0))
-    assert await wrapper.get("key") == "fake_value"
-    aioredis.from_url.assert_called_with("redis://fake-host")
+
+@pytest.mark.asyncio
+async def test_aiocache_with_redirect():
+    with patch("redis_redirect.aioredis_wrapper.aioredis.Redis", RedisMock):
+        aioredis.from_url = Mock(return_value=RedisMock(host="redirect-host", port=0, db=0))
+        wrapper = aioredis_wrapper.AioRedisWrapper(host="redirect-host", port=0)
+        aioredis.from_url.assert_called_once()
+        aioredis.from_url.reset_mock()
+        aioredis.from_url = Mock(return_value=RedisMock(host="fake-host", port=0, db=0))
+        assert await wrapper.get("key") == "fake_value"
+        aioredis.from_url.assert_called_with("redis://fake-host")
 

@@ -31,6 +31,7 @@ class AioRedisWrapper(aioredis.Redis):
         )  # todo use port=self._port
 
     def __getattribute__(self, attr_name):
+        # todo place upstream Redis attributes to __dict__ for IDE autocomplete works
         original_redis = object.__getattribute__(self, "_original_redis")  # to prevent __getattribute__ recursion
         try:
             attr = object.__getattribute__(original_redis, attr_name)
@@ -38,7 +39,7 @@ class AioRedisWrapper(aioredis.Redis):
             if attr_name not in object.__getattribute__(self, "__dict__"):  # to prevent __getattribute__ recursion
                 raise  # this is not RedisWrapper attribute
             return object.__getattribute__(self, attr_name)  # RedisWrapper own attribute
-        if inspect.signature(attr).return_annotation == Awaitable:
+        if attr is not None and inspect.signature(attr).return_annotation == Awaitable:
 
             async def wrapper(*args, **kwargs):
                 nonlocal attr

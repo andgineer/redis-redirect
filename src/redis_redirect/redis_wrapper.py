@@ -24,6 +24,7 @@ class RedisWrapper(redis.Redis):
         self._original_redis = redis.Redis(host=self._host, port=self._port, db=self._db)
 
     def __getattribute__(self, attr_name):
+        # todo place upstream Redis attributes to __dict__ for IDE autocomplete works
         original_redis = object.__getattribute__(self, "_original_redis")  # to prevent __getattribute__ recursion
         try:
             attr = object.__getattribute__(original_redis, attr_name)

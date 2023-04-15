@@ -10,16 +10,16 @@ When Redis returns a MOVED exception, it indicates that the client should repeat
 
 This exception can occur in the following situations:
 
-1) Your Redis configuration is incorrect. In this case, you should fix your Redis settings as the 
-`redis-redirect` cannot help you in this scenario. 
+1) Your Redis configuration is incorrect. In this case, you should fix your Redis settings, 
+`redis-redirect` cannot help you in this scenario.
 2) You are connecting to the wrong host. 
 For instance, if you're using Amazon managed Redis (ElastiCache), Amazon provides a fixed 
 DNS name for the configuration node and an IP address for the work node. The IP address may change in the future. 
-In such cases, it's advisable to use the fixed DNS name, which will redirect your request to the correct node. 
-3) You're using a multi-node Redis cluster. 
-4) In this case, you can use the `redis-redirect` to automatically switch between Redis nodes or shards.
+In such cases, you should just use the DNS name, `redis-redirect` cannot help you in this scenario. 
+3) You're using a multi-node Redis cluster.
+In this case, you can use the `redis-redirect` to automatically switch between Redis nodes or shards.
 
-The `redis-redirect` is designed to handle these situations seamlessly and transparently.
+The `redis-redirect` is designed to handle `MOVED` exceptions seamlessly and transparently.
 
 # Installation
 

@@ -1,7 +1,9 @@
 """
 REDIS async pubsub example
 """
+
 import aioredis
+import contextlib
 from redis_redirect.aioredis_wrapper import cache
 import asyncio
 
@@ -11,7 +13,7 @@ STOPWORD = "STOP"
 
 async def consumer(channel: aioredis.client.PubSub):
     while True:
-        try:
+        with contextlib.suppress(asyncio.TimeoutError):
             message = await channel.get_message(ignore_subscribe_messages=True)
             if message is not None:
                 print(f"(Reader) Message Received: {message}")
@@ -19,8 +21,6 @@ async def consumer(channel: aioredis.client.PubSub):
                     print("(Reader) STOP")
                     break
             await asyncio.sleep(0)
-        except asyncio.TimeoutError:
-            pass
 
 
 async def main():

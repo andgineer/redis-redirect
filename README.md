@@ -6,24 +6,20 @@ Like
 
         redis.exceptions.ResponseError: MOVED 4085 10.213.192.152:6379
 
-With this exception REDIS tells that you should repeat your request for
-the specified host.
+When Redis returns a MOVED exception, it indicates that the client should repeat its request for the specified host.
 
-That happens
-1) your REDIS configuration just wrong
-2) you connect to the wrong host
-3) you are using multi-node REDIS cluster
+This exception can occur in the following situations:
 
-First case is just configuration error. Fix your settings, for sure the wrapper won't help you.
+1) Your Redis configuration is incorrect. In this case, you should fix your Redis settings as the 
+`redis-redirect` cannot help you in this scenario. 
+2) You are connecting to the wrong host. 
+For instance, if you're using Amazon managed Redis (ElastiCache), Amazon provides a fixed 
+DNS name for the configuration node and an IP address for the work node. The IP address may change in the future. 
+In such cases, it's advisable to use the fixed DNS name, which will redirect your request to the correct node. 
+3) You're using a multi-node Redis cluster. 
+4) In this case, you can use the `redis-redirect` to automatically switch between Redis nodes or shards.
 
-Second case could happen if for example you are using Amazon managed REDIS (elastic cache)
-for which Amazon provides fixed DNS name for configuration node, and just an IP
-for the work node. The IP can change in the future.
-So you better use this fixed DNS name, but it cannot process requests and will
-redirect you to the work node.
-
-For the third case you could use the wrapper to automatically switch between
-REDIS nodes (shards of you REDIS data).
+The `redis-redirect` is designed to handle these situations seamlessly and transparently.
 
 # Installation
 
@@ -39,14 +35,13 @@ REDIS nodes (shards of you REDIS data).
 
 # How it works
 
-If no `MOVED` exception happened, the wrapper transparent and change nothing, just pass all the requests
-to the internal wrapped Redis.
+The `redis-redirect` is designed to transparently handle Redis server redirection exceptions.
 
-If the wrapped Redis redirect to another host, the wrapper will catch the `MOVED` exception 
-and change wrapped Redis address according to the address in the `MOVED` exception.
+When a client sends a request to the Redis server, the `redis-redirect` checks if 
+the server has returned a `MOVED` exception. 
 
-Next the wrapper automatically repeat the same request now with wrapped Redis pointing
-to the new host.
+If a `MOVED` exception is received, the `redis-redirect` updates the address of the Redis server and resends 
+the request to the new address.
 
-After the redirect and changing wrapped Redis, the wrapper will be transparent again 
-and won't affect the performance.
+After the `redis-redirect` updates the Redis server address, it transparently forwards subsequent requests to 
+the new Redis server address. 

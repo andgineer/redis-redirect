@@ -44,7 +44,7 @@ class RedisWrapper(redis.Redis):
                         "MOVED"
                     ):  # something like "MOVED 12182 10.188.32.41:6379"
                         # For some reasons even a Redis Cluster with one node can redirect requests
-                        # We use the redirect address as new Redis master and hope the cluster have only one node so no more MOVED
+                        # We use the redirect address as new Redis master
                         redis_connection_str = e.args[0].split(" ")[2]
                         self._host, self._port = redis_connection_str.split(":")
                         log.debug(f"Redis redirect to node {self._host}:{self._port}")

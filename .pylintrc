@@ -60,113 +60,38 @@ confidence=
 # --enable=similarities". If you want to run only the classes checker, but have
 # no Warning level messages displayed, use "--disable=all --enable=classes
 # --disable=W".
-disable=apply-builtin,
-        attribute-defined-outside-init,
-        backtick,
-        bad-continuation,
-        bad-inline-option,
-        bad-python3-import,
-        basestring-builtin,
+disable=attribute-defined-outside-init,
         broad-except,
-        buffer-builtin,
-        cmp-builtin,
-        cmp-method,
-        coerce-builtin,
-        coerce-method,
-        comprehension-escape,
         consider-using-with,
-        delslice-method,
-        deprecated-itertools-function,
-        deprecated-operator-function,
         deprecated-pragma,
-        deprecated-str-translate-call,
-        deprecated-string-function,
-        deprecated-sys-function,
-        deprecated-types-field,
-        deprecated-urllib-function,
-        dict-items-not-iterating,
-        dict-iter-method,
-        dict-keys-not-iterating,
-        dict-values-not-iterating,
-        dict-view-method,
-        div-method,
         duplicate-code,
-        eq-without-hash,
-        exception-escape,
-        exception-message-attribute,
-        execfile-builtin,
-        file-builtin,
         file-ignored,
-        filter-builtin-not-iterating,
         fixme,
-        getslice-method,
-        hex-method,
-        idiv-method,
         import-error,
         import-outside-toplevel,
-        import-star-module-level,
-        indexing-exception,
-        input-builtin,
-        intern-builtin,
         invalid-name,
-        invalid-str-codec,
         line-too-long,
         locally-disabled,
         logging-fstring-interpolation,
-        long-builtin,
-        long-suffix,
-        map-builtin-not-iterating,
-        metaclass-assignment,
         missing-class-docstring,
         missing-function-docstring,
         missing-module-docstring,
-        next-method-called,
-        next-method-defined,
-        no-absolute-import,
         no-member,
-        no-self-use,
-        non-ascii-bytes-literal,
-        nonzero-method,
-        oct-method,
-        old-division,
-        old-ne-operator,
-        old-octal-literal,
-        old-raise-syntax,
-        parameter-unpacking,
-        print-statement,
         protected-access,
-        raising-string,
-        range-builtin-not-iterating,
         raw-checker-failed,
-        raw_input-builtin,
-        rdiv-method,
         redefined-builtin,
         redefined-outer-name,
-        reduce-builtin,
         relative-beyond-top-level,
-        reload-builtin,
-        round-builtin,
-        setslice-method,
-        standarderror-builtin,
         suppressed-message,
-        sys-max-int,
         too-few-public-methods,
         too-many-arguments,
         too-many-instance-attributes,
         too-many-locals,
-        unichr-builtin,
-        unicode-builtin,
-        unpacking-in-except,
         unused-variable,  # handled by flake8
         use-symbolic-message-instead,
         useless-suppression,
-        using-cmp-argument,
         wrong-import-order,
         wrong-import-position,
-        xrange-builtin,
-        xreadlines-attribute,
-        zip-builtin-not-iterating,
-        C0330,  # Wrong hanging indentation before block
         W1202,  # Use % formatting in logging functions and pass the % parameters as arguments
         W1203,  # Use lazy % or .format() formatting in logging functions
         E1101,  # Module has no member (mypy checks that)
@@ -283,13 +208,6 @@ max-line-length=99
 
 # Maximum number of lines in a module.
 max-module-lines=1000
-
-# List of optional constructs for which whitespace checking is disabled. `dict-
-# separator` is used to allow tabulation in dicts, etc.: {1  : 1,\n222: 2}.
-# `trailing-comma` allows a space between comma and closing bracket: (a, ).
-# `empty-line` allows space-only lines.
-no-space-check=trailing-comma,
-               dict-separator
 
 # Allow the body of a class to be on the same line as the declaration if body
 # contains single statement.
@@ -600,5 +518,5 @@ valid-metaclass-classmethod-first-arg=cls
 
 # Exceptions that will emit a warning when being caught. Defaults to
 # "BaseException, Exception".
-overgeneral-exceptions=BaseException,
-                       Exception
+overgeneral-exceptions=builtins.BaseException,
+                       builtins.Exception

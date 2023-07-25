@@ -1,4 +1,3 @@
-aioredis
 hiredis
 types-redis
-redis
+redis>=4.2.0rc1

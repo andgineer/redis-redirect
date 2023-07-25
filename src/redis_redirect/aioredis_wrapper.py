@@ -2,8 +2,8 @@ import asyncio
 import inspect
 from typing import Awaitable
 
-import aioredis
-import aioredis.exceptions
+from redis import asyncio as aioredis
+
 import os
 import logging
 
@@ -46,7 +46,7 @@ class AioRedisWrapper(aioredis.Redis):
                 log.debug(f"wrapped {attr_name} call")
                 try:
                     return await attr(*args, **kwargs)
-                except aioredis.exceptions.ResponseError as e:
+                except aioredis.ResponseError as e:
                     if e.args[0].startswith(
                         "MOVED"
                     ):  # something like "MOVED 12182 10.188.32.41:6379"

@@ -1,10 +1,9 @@
 from redis_redirect import aioredis_wrapper
-import aioredis
-import aioredis.exceptions
-import pytest
+from redis import asyncio as aioredis
 import logging
 from unittest.mock import Mock, patch
 from typing import Awaitable
+import pytest
 
 
 log = logging.getLogger(__name__)
@@ -25,7 +24,7 @@ class RedisMock:
     def get(self, key) -> Awaitable:
         log.debug(f"RedisMock.get ({self.host})")
         if self.host == "redirect-host":
-            raise aioredis.exceptions.ResponseError("MOVED ?? fake-host:0")
+            raise aioredis.ResponseError("MOVED ?? fake-host:0")
         return async_get("fake_value")
 
 

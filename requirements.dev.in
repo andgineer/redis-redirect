@@ -2,3 +2,8 @@ pytest
 pytest-asyncio
 pytest-cov
 types-redis
+pre-commit
+mypy
+black
+pylint
+pydocstyle

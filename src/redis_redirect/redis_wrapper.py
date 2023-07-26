@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Any
+from typing import Any, Optional
 
 import redis
 import redis.exceptions
@@ -11,13 +11,13 @@ REDIS_PORT = 6379
 log = logging.getLogger(__name__)
 
 
-class RedisWrapper(redis.Redis):
+class RedisWrapper(redis.Redis):  # type: ignore  # pylint: disable=abstract-method,too-many-ancestors
     """Wrap all Redis methods to catch "MOVED" exception.
 
     Change host&port if any and repeat the method call.
     """
 
-    _original_redis = None
+    _original_redis: Optional[redis.Redis] = None  # type: ignore
 
     def __init__(self, host: str, port: int, db: int = 0):  # pylint: disable=super-init-not-called
         """Init."""

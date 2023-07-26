@@ -10,12 +10,12 @@ When Redis returns a MOVED exception, it indicates that the client should repeat
 
 This exception can occur in the following situations:
 
-1) Your Redis configuration is incorrect. In this case, you should fix your Redis settings, 
+1) Your Redis configuration is incorrect. In this case, you should fix your Redis settings,
 `redis-redirect` cannot help you in this scenario.
-2) You are connecting to the wrong host. 
-For instance, if you're using Amazon managed Redis (ElastiCache), Amazon provides a fixed 
-DNS name for the configuration node and an IP address for the work node. The IP address may change in the future. 
-In such cases, you should just use the DNS name, `redis-redirect` cannot help you in this scenario. 
+2) You are connecting to the wrong host.
+For instance, if you're using Amazon managed Redis (ElastiCache), Amazon provides a fixed
+DNS name for the configuration node and an IP address for the work node. The IP address may change in the future.
+In such cases, you should just use the DNS name, `redis-redirect` cannot help you in this scenario.
 3) You're using a multi-node Redis cluster.
 In this case, you can use the `redis-redirect` to automatically switch between Redis nodes or shards.
 
@@ -26,7 +26,7 @@ The `redis-redirect` is designed to handle `MOVED` exceptions seamlessly and tra
         pip install redis-redirect
 
 # Usage
-    
+
         import redis_redirect
 
         redis = redis_redirect.Redis(host='my-redis.com', port=6379, db=0)
@@ -37,11 +37,11 @@ The `redis-redirect` is designed to handle `MOVED` exceptions seamlessly and tra
 
 The `redis-redirect` is designed to transparently handle Redis server redirection exceptions.
 
-When a client sends a request to the Redis server, the `redis-redirect` checks if 
-the server has returned a `MOVED` exception. 
+When a client sends a request to the Redis server, the `redis-redirect` checks if
+the server has returned a `MOVED` exception.
 
-If a `MOVED` exception is received, the `redis-redirect` updates the address of the Redis server and resends 
+If a `MOVED` exception is received, the `redis-redirect` updates the address of the Redis server and resends
 the request to the new address.
 
-After the `redis-redirect` updates the Redis server address, it transparently forwards subsequent requests to 
-the new Redis server address. 
+After the `redis-redirect` updates the Redis server address, it transparently forwards subsequent requests to
+the new Redis server address.

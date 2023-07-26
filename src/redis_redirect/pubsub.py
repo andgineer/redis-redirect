@@ -1,18 +1,17 @@
-"""
-REDIS async pubsub example
-"""
+"""REDIS async pubsub example."""
+
+import asyncio
+import contextlib
 
 from redis import asyncio as aioredis
 
-import contextlib
 from redis_redirect.aioredis_wrapper import cache
-import asyncio
-
 
 STOPWORD = "STOP"
 
 
-async def consumer(channel: aioredis.client.PubSub):
+async def consumer(channel: aioredis.client.PubSub) -> None:
+    """Listen for messages."""
     while True:
         with contextlib.suppress(asyncio.TimeoutError):
             message = await channel.get_message(ignore_subscribe_messages=True)
@@ -24,7 +23,8 @@ async def consumer(channel: aioredis.client.PubSub):
             await asyncio.sleep(0)
 
 
-async def main():
+async def main() -> None:
+    """Run pubsub loop."""
     await cache.set("foo1", "bar1FFFF567")
     print(await cache.get("foo1"))
     pubsub = cache.pubsub()

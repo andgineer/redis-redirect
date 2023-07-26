@@ -1,10 +1,11 @@
-from redis_redirect import aioredis_wrapper
-from redis import asyncio as aioredis
 import logging
-from unittest.mock import Mock, patch
 from typing import Awaitable
-import pytest
+from unittest.mock import Mock, patch
 
+import pytest
+from redis import asyncio as aioredis
+
+from redis_redirect import aioredis_wrapper
 
 log = logging.getLogger(__name__)
 
@@ -15,6 +16,7 @@ async def async_get(result):
 
 class RedisMock:
     """If inited with host=`redirect-host` then raise MOVED exception with redirect to `fake-host:0`"""
+
     def __init__(self, host, port, db):
         self.host = host
         self.connection = Mock()
@@ -47,4 +49,3 @@ async def test_aiocache_with_redirect():
         aioredis.from_url = Mock(return_value=RedisMock(host="fake-host", port=0, db=0))
         assert await wrapper.get("key") == "fake_value"
         aioredis.from_url.assert_called_with("redis://fake-host")
-

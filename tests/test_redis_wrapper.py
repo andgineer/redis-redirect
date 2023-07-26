@@ -1,10 +1,10 @@
+import logging
 from unittest.mock import patch
 
-from redis_redirect import redis_wrapper
 import redis
 import redis.exceptions
-import logging
 
+from redis_redirect import redis_wrapper
 
 log = logging.getLogger(__name__)
 
@@ -38,4 +38,3 @@ def test_cache_with_redirect():
         wrapper = redis_wrapper.RedisWrapper(host="redirect-host", port=0)
         assert wrapper.get("key") == "fake_value"
         assert wrapper._original_redis.host == "fake-host"
-

@@ -1,0 +1,3 @@
+hiredis
+types-redis
+redis>=4.2.0rc1

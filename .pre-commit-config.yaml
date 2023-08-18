@@ -1,3 +1,10 @@
+exclude: |
+    (?x)(
+        tests/|
+        site/|
+        setup.py|
+        version.py
+    )
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
@@ -66,7 +73,6 @@ repos:
         entry: dmypy
         files: \.py$
         # pre-commit send full file list so exclude in .mypy.ini is ignored
-        exclude: (tests)
         language: python
         require_serial: true
         args: ["run", "--", "--strict", "--implicit-reexport", "--warn-unused-ignores", "--cache-fine-grained", "--no-namespace-packages"]
@@ -75,13 +81,11 @@ repos:
         name: Pylint
         entry: pylint --max-line-length=99 --ignore-imports=yes
         files: \.py$
-        exclude: (tests|version.py|setup.py)
         language: python
 
       - id: pydocstyle
         name: docstrings
         entry: pydocstyle
         language: python
-        exclude: (tests|version.py)
         args:
           - --ignore=D100,D203,D405,D407,D213,D413

@@ -1,7 +1,9 @@
+# test
 pytest
 pytest-asyncio
 pytest-cov
-types-redis
+
+# lint
 pre-commit
 mypy
 black

@@ -8,22 +8,33 @@ astroid==3.0.2
     # via pylint
 black==23.12.1
     # via -r requirements.dev.in
+certifi==2023.11.17
+    # via requests
 cfgv==3.4.0
     # via pre-commit
+charset-normalizer==3.3.2
+    # via requests
 click==8.1.7
     # via black
-coverage[toml]==7.4.0
+coverage[toml]==6.5.0
     # via
     #   coverage
+    #   coveralls
     #   pytest-cov
+coveralls==3.3.1
+    # via -r requirements.dev.in
 dill==0.3.7
     # via pylint
 distlib==0.3.8
     # via virtualenv
+docopt==0.6.2
+    # via coveralls
 filelock==3.13.1
     # via virtualenv
 identify==2.5.33
     # via pre-commit
+idna==3.6
+    # via requests
 iniconfig==2.0.0
     # via pytest
 isort==5.13.2
@@ -68,12 +79,16 @@ pytest-cov==4.1.0
     # via -r requirements.dev.in
 pyyaml==6.0.1
     # via pre-commit
+requests==2.31.0
+    # via coveralls
 snowballstemmer==2.2.0
     # via pydocstyle
 tomlkit==0.12.3
     # via pylint
 typing-extensions==4.9.0
     # via mypy
+urllib3==2.1.0
+    # via requests
 virtualenv==20.25.0
     # via pre-commit
 

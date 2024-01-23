@@ -10,6 +10,9 @@ on:
     tags:
       - 'v*.*.*'
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
 
@@ -36,14 +39,15 @@ jobs:
       run: |
         python setup.py sdist bdist_wheel
         twine upload dist/*
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: ${{ env.RELEASE_VERSION }}
+        release_name: Release ${{ env.RELEASE_VERSION }}
         body: https://pypi.org/project/redis-redirect/${{ env.RELEASE_VERSION }}/
         draft: false
         prerelease: false

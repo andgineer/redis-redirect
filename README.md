@@ -1,5 +1,5 @@
-[![Build Status](https://github.com/andgineer/redis-redirect//workflows/ci/badge.svg)](https://github.com/andgineer/redis-redirect//actions)
-
+[![Build Status](https://github.com/andgineer/redis-redirect/workflows/ci/badge.svg)](https://github.com/andgineer/redis-redirect/actions)
+[![Coverage](https://raw.githubusercontent.com/andgineer/redis-redirect/python-coverage-comment-action-data/badge.svg)](https://htmlpreview.github.io/?https://github.com/andgineer/redis-redirect/blob/python-coverage-comment-action-data/htmlcov/index.html)
 # (aio)REDIS wrapper to deal with cluster redirect exceptions `MOVED`
 
 Like
@@ -45,3 +45,7 @@ the request to the new address.
 
 After the `redis-redirect` updates the Redis server address, it transparently forwards subsequent requests to
 the new Redis server address.
+
+## Coverage report
+* [Codecov](https://app.codecov.io/gh/andgineer/redis-redirect/tree/master/src%2Fredis-redirect)
+* [Coveralls](https://coveralls.io/github/andgineer/redis-redirect)

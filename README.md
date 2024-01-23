@@ -47,5 +47,5 @@ After the `redis-redirect` updates the Redis server address, it transparently fo
 the new Redis server address.
 
 ## Coverage report
-* [Codecov](https://app.codecov.io/gh/andgineer/redis-redirect/tree/master/src%2Fredis-redirect)
+* [Codecov](https://app.codecov.io/gh/andgineer/redis-redirect/tree/master/src%2Fredis_redirect)
 * [Coveralls](https://coveralls.io/github/andgineer/redis-redirect)

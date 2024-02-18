@@ -22,16 +22,16 @@ if ! (return 0 2>/dev/null) ; then
 fi
 
 # virtual env
+unset CONDA_PREFIX
 if [[ ! -d ${VENV_FOLDER} ]] ; then
     echo -e $CYAN"Creating virtual environment for python in ${VENV_FOLDER}"$NC
-    if virtualenv ${VENV_FOLDER} --python=${PYTHON}; then
-      python -m venv  ${VENV_FOLDER}
+    if uv venv ${VENV_FOLDER} --python=${PYTHON}; then
       . ${VENV_FOLDER}/bin/activate
-      python -m pip install --upgrade pip
-      python -m pip install -r requirements.dev.txt
-      python -m pip install -e .
+      uv pip install --upgrade pip
+      uv pip install -r requirements.dev.txt
+      uv pip install -e .
     else
-      echo -e $RED"Error to create virtual env. Do you have virtualenv installed?"$NC
+      echo -e $RED"Error to create virtual env. Do you have astral's UV installed?"$NC
       return 1
     fi
 else

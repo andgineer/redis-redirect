@@ -1,6 +1,8 @@
 #!make
+
 VERSION := $(shell cat src/redis_redirect/version.py | cut -d= -f2 | sed 's/\"//g; s/ //')
 export VERSION
+unexport CONDA_PREFIX  # if conda is installed, it will mess with the virtual env
 
 version:
 	echo ${VERSION}
@@ -17,5 +19,4 @@ ver-release:
 reqs:
 	pre-commit autoupdate
 	bash ./scripts/compile_requirements.sh
-	pip install -r requirements.txt
 	pip install -r requirements.dev.txt

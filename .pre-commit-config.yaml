@@ -7,7 +7,7 @@ exclude: |
     )
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -17,7 +17,7 @@ repos:
         exclude: (site)
 
   - repo: https://github.com/myint/autoflake
-    rev: v2.2.1
+    rev: v2.3.1
     hooks:
       - id: autoflake
         name: Cleanup imports
@@ -42,7 +42,7 @@ repos:
           ]
 
   - repo: https://github.com/psf/black
-    rev: 24.2.0
+    rev: 24.10.0
     hooks:
       - id: black
         name: Fixes formatting
@@ -50,7 +50,7 @@ repos:
         args: ["--line-length=99"]
 
   - repo: https://github.com/PyCQA/flake8
-    rev: 7.0.0
+    rev: 7.1.1
     hooks:
       - id: flake8
         name: Checks pep8 style
@@ -88,10 +88,3 @@ repos:
         entry: pylint --max-line-length=99 --ignore-imports=yes
         files: \.py$
         language: python
-
-      - id: pydocstyle
-        name: docstrings
-        entry: pydocstyle
-        language: python
-        args:
-          - --ignore=D100,D203,D405,D407,D213,D413

@@ -2,8 +2,7 @@ import asyncio
 import inspect
 import logging
 import os
-from collections.abc import Awaitable
-from typing import Any, Optional
+from typing import Any, Awaitable, Optional  # noqa: UP035  # do not change to import from abc
 
 from redis import asyncio as aioredis
 

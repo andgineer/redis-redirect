@@ -31,17 +31,19 @@ class RedisWrapper(redis.Redis):  # type: ignore  # pylint: disable=abstract-met
         """Wrap all Redis methods to catch "MOVED" exception."""
         # todo place upstream Redis attributes to __dict__ for IDE autocomplete works
         original_redis = object.__getattribute__(
-            self, "_original_redis"
+            self,
+            "_original_redis",
         )  # to prevent __getattribute__ recursion
         try:
             attr = object.__getattribute__(original_redis, attr_name)
         except AttributeError:
             if attr_name not in object.__getattribute__(
-                self, "__dict__"
+                self,
+                "__dict__",
             ):  # to prevent __getattribute__ recursion
                 raise  # this is not RedisWrapper attribute
             return object.__getattribute__(self, attr_name)  # RedisWrapper own attribute
-        if hasattr(attr, "__call__"):
+        if callable(attr):
 
             def wrapper(*args, **kwargs):  # type: ignore
                 nonlocal attr
@@ -50,7 +52,7 @@ class RedisWrapper(redis.Redis):  # type: ignore  # pylint: disable=abstract-met
                     return attr(*args, **kwargs)
                 except redis.exceptions.ResponseError as e:
                     if e.args[0].startswith(
-                        "MOVED"
+                        "MOVED",
                     ):  # something like "MOVED 12182 10.188.32.41:6379"
                         # For some reasons even a Redis Cluster with one node can redirect requests
                         # We use the redirect address as new Redis master

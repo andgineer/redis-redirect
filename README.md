@@ -2,7 +2,7 @@
 [![Coverage](https://raw.githubusercontent.com/andgineer/redis-redirect/python-coverage-comment-action-data/badge.svg)](https://htmlpreview.github.io/?https://github.com/andgineer/redis-redirect/blob/python-coverage-comment-action-data/htmlcov/index.html)
 # (aio)REDIS wrapper to deal with cluster redirect exceptions `MOVED`
 
-Like
+Handles exceptions like:
 
         redis.exceptions.ResponseError: MOVED 4085 10.213.192.152:6379
 
@@ -10,16 +10,16 @@ When Redis returns a MOVED exception, it indicates that the client should repeat
 
 This exception can occur in the following situations:
 
-1) Your Redis configuration is incorrect. In this case, you should fix your Redis settings,
-`redis-redirect` cannot help you in this scenario.
-2) You are connecting to the wrong host.
-For instance, if you're using Amazon managed Redis (ElastiCache), Amazon provides a fixed
-DNS name for the configuration node and an IP address for the work node. The IP address may change in the future.
-In such cases, you should just use the DNS name, `redis-redirect` cannot help you in this scenario.
-3) You're using a multi-node Redis cluster.
-In this case, you can use the `redis-redirect` to automatically switch between Redis nodes or shards.
+1. Your Redis configuration is incorrect. In this case, you should fix your Redis settings.
+   `redis-redirect` cannot help in this scenario.
+2. You are connecting to the wrong host.
+   For instance, if you're using Amazon managed Redis (ElastiCache), Amazon provides a fixed
+   DNS name for the configuration node and an IP address for the work node. The IP address may change in the future.
+   In such cases, you should use the DNS name. `redis-redirect` cannot help in this scenario.
+3. You're using a multi-node Redis cluster.
+   In this case, you can use `redis-redirect` to automatically switch between Redis nodes or shards.
 
-The `redis-redirect` is designed to handle `MOVED` exceptions seamlessly and transparently.
+`redis-redirect` handles `MOVED` exceptions seamlessly and transparently.
 
 # Installation
 
@@ -35,15 +35,15 @@ The `redis-redirect` is designed to handle `MOVED` exceptions seamlessly and tra
 
 # How it works
 
-The `redis-redirect` is designed to transparently handle Redis server redirection exceptions.
+`redis-redirect` transparently handles Redis server redirection exceptions.
 
-When a client sends a request to the Redis server, the `redis-redirect` checks if
+When a client sends a request to the Redis server, `redis-redirect` checks if
 the server has returned a `MOVED` exception.
 
-If a `MOVED` exception is received, the `redis-redirect` updates the address of the Redis server and resends
+If a `MOVED` exception is received, `redis-redirect` updates the Redis server address and resends
 the request to the new address.
 
-After the `redis-redirect` updates the Redis server address, it transparently forwards subsequent requests to
+After updating the Redis server address, `redis-redirect` transparently forwards subsequent requests to
 the new Redis server address.
 
 ## Coverage report

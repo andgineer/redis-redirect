@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 from typing import Any
 
 import redis
@@ -30,6 +31,11 @@ class RedisWrapper(redis.Redis):  # type: ignore  # pylint: disable=abstract-met
     def __getattribute__(self, attr_name: str) -> Any:
         """Wrap all Redis methods to catch "MOVED" exception."""
         # todo place upstream Redis attributes to __dict__ for IDE autocomplete works
+
+        # During shutdown, skip wrapping to avoid accessing None globals
+        if sys is None or sys.is_finalizing():
+            return object.__getattribute__(self, attr_name)
+
         original_redis = object.__getattribute__(
             self,
             "_original_redis",

@@ -21,58 +21,56 @@ The wrappers inherit from their respective Redis classes primarily for IDE autoc
 
 ## Development Commands
 
+### Environment Setup
+```bash
+# Set up or activate development environment
+source ./activate.sh
+```
+
+**IMPORTANT**: Always activate the virtual environment before running any commands. Use `source ./activate.sh` before each command.
+
 ### Testing
 ```bash
 # Run all tests with coverage
-python -m pytest --cov=src tests/
+source ./activate.sh && python -m pytest --cov=src tests/
 
 # Run tests with detailed output
-python -m pytest -v tests/
+source ./activate.sh && python -m pytest -v tests/
 
 # Run specific test file
-python -m pytest tests/test_redis_wrapper.py
-python -m pytest tests/test_aioredis_wrapper.py
+source ./activate.sh && python -m pytest tests/test_redis_wrapper.py
+source ./activate.sh && python -m pytest tests/test_aioredis_wrapper.py
 ```
 
 ### Linting and Code Quality
 ```bash
-# Install development dependencies
-pip install -r requirements.dev.txt
-
-# Run pylint (configured in CI)
-pylint src/
-
-# Run mypy type checking
-mypy src/
-
-# Format code with black
-black src/ tests/
-
-# Check code style
-pydocstyle src/
+# Run pre-commit hooks for all code quality checks
+source ./activate.sh && pre-commit run --all-files
 ```
+
+**IMPORTANT**: Always use `pre-commit run --all-files` for code quality checks. Never run pylint, mypy, or black directly.
 
 ### Dependencies Management
 ```bash
 # Update requirements (uses custom script)
-bash ./scripts/compile_requirements.sh
+source ./activate.sh && bash ./scripts/compile_requirements.sh
 
 # Update pre-commit hooks
-pre-commit autoupdate
+source ./activate.sh && pre-commit autoupdate
 
 # Install all dev dependencies
-make reqs
+source ./activate.sh && make reqs
 ```
 
 ### Building and Publishing
 ```bash
 # Build package
-pip install -e .
+source ./activate.sh && pip install -e .
 
 # Version management
-make ver-bug      # Bump patch version
-make ver-feature  # Bump minor version
-make ver-release  # Bump major version
+source ./activate.sh && make ver-bug      # Bump patch version
+source ./activate.sh && make ver-feature  # Bump minor version
+source ./activate.sh && make ver-release  # Bump major version
 ```
 
 ## Testing Strategy

@@ -8,7 +8,5 @@ coveralls
 
 # lint
 pre-commit
-mypy
-black
-pylint
+pyrefly
 pydocstyle

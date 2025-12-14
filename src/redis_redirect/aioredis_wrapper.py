@@ -2,7 +2,7 @@ import asyncio
 import inspect
 import logging
 import os
-from typing import Any, Awaitable, Optional  # noqa: UP035  # do not change to import from abc
+from typing import Any, Awaitable  # noqa: UP035  # do not change to import from abc
 
 from redis import asyncio as aioredis
 
@@ -18,7 +18,7 @@ class AioRedisWrapper(aioredis.Redis):  # type: ignore  # pylint: disable=abstra
     Change host&port if any and repeat the method call.
     """
 
-    _original_redis: Optional[aioredis.Redis] = None  # type: ignore
+    _original_redis: aioredis.Redis | None = None  # type: ignore
 
     def __init__(self, host: str, port: int, db: int = 0):  # pylint: disable=super-init-not-called
         """Init."""

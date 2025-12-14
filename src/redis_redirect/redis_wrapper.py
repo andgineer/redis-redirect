@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Any, Optional
+from typing import Any
 
 import redis
 import redis.exceptions
@@ -17,7 +17,7 @@ class RedisWrapper(redis.Redis):  # type: ignore  # pylint: disable=abstract-met
     Change host&port if any and repeat the method call.
     """
 
-    _original_redis: Optional[redis.Redis] = None  # type: ignore
+    _original_redis: redis.Redis | None = None  # type: ignore
 
     def __init__(self, host: str, port: int, db: int = 0):  # pylint: disable=super-init-not-called
         """Init."""

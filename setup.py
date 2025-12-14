@@ -1,12 +1,19 @@
+import sys
+from pathlib import Path
+
 import setuptools
+
+# Add src to path so we can import redis_redirect
+src_path = Path(__file__).parent / "src"
+sys.path.insert(0, str(src_path))
+
+from redis_redirect import version  # noqa: E402
 
 with open("README.md") as fh:
     long_description = fh.read()
 
 with open("requirements.in") as f:
     requirements = f.read().splitlines()
-
-from src.redis_redirect import version
 
 setuptools.setup(
     name="redis-redirect",

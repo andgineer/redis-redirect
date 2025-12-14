@@ -4,11 +4,11 @@
 
 | Name                                     |    Stmts |     Miss |   Cover |   Missing |
 |----------------------------------------- | -------: | -------: | ------: | --------: |
-| src/redis\_redirect/aioredis\_wrapper.py |       48 |        5 |     90% |47, 72, 84-85, 89 |
+| src/redis\_redirect/aioredis\_wrapper.py |       51 |        6 |     88% |40, 53, 78, 90-91, 95 |
 | src/redis\_redirect/pubsub.py            |       27 |       27 |      0% |      3-43 |
-| src/redis\_redirect/redis\_wrapper.py    |       45 |        5 |     89% |44, 66, 70, 80-81 |
+| src/redis\_redirect/redis\_wrapper.py    |       48 |        6 |     88% |37, 50, 72, 76, 86-87 |
 | src/redis\_redirect/version.py           |        1 |        1 |      0% |         1 |
-|                                **TOTAL** |  **121** |   **38** | **69%** |           |
+|                                **TOTAL** |  **127** |   **40** | **69%** |           |
 
 
 ## Setup coverage badge

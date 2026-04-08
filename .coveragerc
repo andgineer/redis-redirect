@@ -15,3 +15,7 @@ omit =
     */.github/*
     */.vscode/*
     */.pytest_cache/*
+    # Example/script file, not a library component
+    */redis_redirect/pubsub.py
+    # Single constant, not worth testing
+    */redis_redirect/version.py

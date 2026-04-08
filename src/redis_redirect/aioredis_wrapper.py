@@ -52,7 +52,11 @@ class AioRedisWrapper(aioredis.Redis):  # type: ignore  # pylint: disable=abstra
             ):  # to prevent __getattribute__ recursion
                 raise  # this is not RedisWrapper attribute
             return object.__getattribute__(self, attr_name)  # RedisWrapper own attribute
-        if attr is not None and inspect.signature(attr).return_annotation == Awaitable:
+        if (
+            attr is not None
+            and callable(attr)
+            and inspect.signature(attr).return_annotation == Awaitable
+        ):
 
             async def wrapper(*args, **kwargs):  # type: ignore
                 nonlocal attr

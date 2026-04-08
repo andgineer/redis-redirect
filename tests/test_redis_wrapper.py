@@ -38,3 +38,31 @@ def test_cache_with_redirect():
         wrapper = redis_wrapper.RedisWrapper(host="redirect-host", port=0)
         assert wrapper.get("key") == "fake_value"
         assert wrapper._original_redis.host == "fake-host"
+
+
+def test_non_moved_error_is_reraised():
+    class ErrorMock(RedisMock):
+        def get(self, key):
+            raise redis.exceptions.ResponseError("ERR some other error")
+
+    with patch("redis_redirect.redis_wrapper.redis.Redis", ErrorMock):
+        wrapper = redis_wrapper.RedisWrapper(host="fake-host", port=0)
+        try:
+            wrapper.get("key")
+            assert False, "Expected ResponseError"
+        except redis.exceptions.ResponseError as e:
+            assert "ERR some other error" in str(e)
+
+
+def test_non_callable_attribute_passthrough():
+    with patch("redis_redirect.redis_wrapper.redis.Redis", RedisMock):
+        wrapper = redis_wrapper.RedisWrapper(host="fake-host", port=0)
+        assert wrapper.host == "fake-host"
+
+
+def test_wrapper_own_attributes():
+    with patch("redis_redirect.redis_wrapper.redis.Redis", RedisMock):
+        wrapper = redis_wrapper.RedisWrapper(host="fake-host", port=1234, db=2)
+        assert wrapper._host == "fake-host"
+        assert wrapper._port == 1234
+        assert wrapper._db == 2

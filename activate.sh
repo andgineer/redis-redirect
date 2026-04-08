@@ -4,7 +4,7 @@
 #
 
 VENV_FOLDER=".venv"
-PYTHON="python3.12"  # sync with python-version in .github/workflows/static.yml
+PYTHON="python3.13"  # sync with python-version in .github/workflows/static.yml
 
 RED='\033[1;31m'
 GREEN='\033[1;32m'
@@ -29,7 +29,6 @@ if [[ ! -d ${VENV_FOLDER} ]] ; then
       START_TIME=$(date +%s)
 
       . ${VENV_FOLDER}/bin/activate
-      uv pip install --upgrade pip
       uv pip install -r requirements.dev.txt
       uv pip install -e .
 
